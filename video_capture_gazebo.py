@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-import cv2
 import gi
 import numpy as np
+import cv2 as cv
 
 gi.require_version('Gst', '1.0')
 from gi.repository import Gst
@@ -50,6 +50,6 @@ if __name__ == '__main__':
             continue
 
         frame = stream.frame
-        cv2.imshow('frame', frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        cv.imshow('frame', frame)
+        if cv.waitKey(1) & 0xFF == ord('q'):
             break
