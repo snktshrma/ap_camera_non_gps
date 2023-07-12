@@ -3,7 +3,6 @@ import cv2 as cv
 from matplotlib import pyplot as plt
 import pyexiv2, json
 import math
-import video_capture_gazebo
 
 baseImg = "test1.jpeg"
 testImg = "test2.jpeg"

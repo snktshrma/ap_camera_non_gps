@@ -16,7 +16,8 @@ class Cam_stream():
         self.config = f'udpsrc port={port} ! application/x-rtp, payload=96 ! rtph264depay ! h264parse ! avdec_h264 ! decodebin ! videoconvert ! video/x-raw,format=(string)BGR ! videoconvert ! appsink emit-signals=true sync=false max-buffers=2 drop=true'
         self.pipe = None
         self.vid_out = None
-
+        self.check = 0
+        self.n = 0
         self.main()
 
     def bridge(self,sample):
@@ -41,6 +42,21 @@ class Cam_stream():
         self.frame = mainframe
         return Gst.FlowReturn.OK
 
+    def setup(self):
+        while True:
+            if not self.frame_available():
+                continue
+
+            cv.imshow('frame', self.frame)
+
+            if self.check == 1:
+                self.n += 1
+                cv.imwrite(f"data{self.n}.jpeg", self.frame)
+                self.check = 0
+
+            if cv.waitKey(1) & 0xFF == ord('q'):
+                break
+
 
 if __name__ == '__main__':
     stream = Cam_stream()
@@ -51,5 +67,11 @@ if __name__ == '__main__':
 
         frame = stream.frame
         cv.imshow('frame', frame)
+
+        if self.check == 1:
+            self.n += 1
+            cv.imwrite(f"data{self.n}.jpeg", self.frame)
+            self.check = 0
+
         if cv.waitKey(1) & 0xFF == ord('q'):
             break
